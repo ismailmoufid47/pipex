@@ -6,7 +6,7 @@
 /*   By: isel-mou <isel-mou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 19:36:41 by isel-mou          #+#    #+#             */
-/*   Updated: 2025/02/08 20:15:26 by isel-mou         ###   ########.fr       */
+/*   Updated: 2025/02/09 19:34:53 by isel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*get_cmd_path(char *cmd, char *envp[])
 	i = 0;
 	cmd_path = ft_strjoin(path[i], cmd);
 	while (path[i] && access(cmd_path, X_OK))
-		cmd_path = ft_strjoin(path[i++], cmd);
+		cmd_path = ((free(cmd_path)), ft_strjoin(path[i++], cmd));
 	if (!access(cmd_path, X_OK))
 		return (cmd_path);
 	return (free(cmd_path), (ft_free_split(path)), NULL);
