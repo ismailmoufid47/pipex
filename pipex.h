@@ -6,7 +6,7 @@
 /*   By: isel-mou <isel-mou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 17:20:56 by isel-mou          #+#    #+#             */
-/*   Updated: 2025/02/09 16:41:38 by isel-mou         ###   ########.fr       */
+/*   Updated: 2025/02/09 19:07:10 by isel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include <string.h>
 # include <sys/errno.h>
+# include <sys/wait.h>
 
 typedef enum e_file_descriptors
 {
