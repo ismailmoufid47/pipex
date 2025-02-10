@@ -6,7 +6,7 @@
 /*   By: isel-mou <isel-mou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 19:34:29 by isel-mou          #+#    #+#             */
-/*   Updated: 2025/02/09 16:53:19 by isel-mou         ###   ########.fr       */
+/*   Updated: 2025/02/10 20:57:58 by isel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ pid_t	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
 	if (pid == 0)
 	{
 		close(pipex->pipefd[READ]);
-		in_fd = open(pipex->argv[1], O_RDONLY);
-		if (in_fd == -1)
-			handle_file_error(pipex->argv[1]);
+		in_fd = open_file(pipex, INFILE);
 		dup_and_close(in_fd, STDIN_FILENO, pipex->pipefd[WRITE], STDOUT_FILENO);
 		execute_cmd(ft_split_cmd(cmd, ' '), envp);
 	}
@@ -88,7 +86,7 @@ In the last child process:
 - We open the READ end of the pipe as standard input.
 - Finally, we execute the command.
 */
-pid_t	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
+void	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
 {
 	pid_t	pid;
 	int		out_fd;
@@ -96,10 +94,7 @@ pid_t	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
 	pid = fork();
 	if (pid == 0)
 	{
-		out_fd = O_WRONLY | O_CREAT | O_TRUNC;
-		if (!ft_strcmp(pipex->argv[1], "here_doc"))
-			out_fd = O_WRONLY | O_CREAT | O_APPEND;
-		out_fd = open(pipex->argv[pipex->argc - 1], out_fd, 0644);
+		out_fd = openfile(pipex, HERE_DOC);
 		if (out_fd == -1)
 			handle_file_error(pipex->argv[pipex->argc - 1]);
 		dup_and_close(pipex->pipefd[READ], STDIN_FILENO, out_fd, STDOUT_FILENO);
@@ -113,6 +108,7 @@ pid_t	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
 		waitpid(pid, &pipex->status, 0);
 		if (!ft_strcmp(pipex->argv[1], "here_doc") && unlink("here_doc") == -1)
 			handle_file_error("here_doc");
+		while (wait(NULL) > 0)
+			;
 	}
-	return (pid);
 }

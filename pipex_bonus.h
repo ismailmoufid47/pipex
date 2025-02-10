@@ -6,7 +6,7 @@
 /*   By: isel-mou <isel-mou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 17:20:56 by isel-mou          #+#    #+#             */
-/*   Updated: 2025/02/09 19:07:01 by isel-mou         ###   ########.fr       */
+/*   Updated: 2025/02/10 20:59:25 by isel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 typedef enum e_file_descriptors
 {
 	INFILE,
-	OUTFILE
+	OUTFILE,
+	HERE_DOC
 }	t_file_descriptors;
 
 typedef enum e_pipe_descriptors

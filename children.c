@@ -6,7 +6,7 @@
 /*   By: isel-mou <isel-mou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 19:34:29 by isel-mou          #+#    #+#             */
-/*   Updated: 2025/02/08 21:02:42 by isel-mou         ###   ########.fr       */
+/*   Updated: 2025/02/10 20:58:22 by isel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ pid_t	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
 	if (pid == 0)
 	{
 		close(pipex->pipefd[READ]);
-		in_fd = open(pipex->argv[1], O_RDONLY);
+		in_fd = open_file(pipex, INFILE);
 		if (in_fd == -1)
 			handle_file_error(pipex->argv[1]);
 		dup_and_close(in_fd, STDIN_FILENO, pipex->pipefd[WRITE], STDOUT_FILENO);
@@ -60,10 +60,7 @@ pid_t	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
 	if (pid == 0)
 	{
 		close(pipex->pipefd[WRITE]);
-		out_fd = open(pipex->argv[pipex->argc - 1],
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (out_fd == -1)
-			handle_file_error(pipex->argv[pipex->argc - 1]);
+		out_fd = open_file(pipex, OUTFILE);
 		dup_and_close(pipex->pipefd[READ], STDIN_FILENO, out_fd, STDOUT_FILENO);
 		execute_cmd(ft_split_cmd(cmd, ' '), envp);
 	}
@@ -73,6 +70,8 @@ pid_t	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
 	{
 		waitpid(pid, &pipex->status, 0);
 		close(pipex->pipefd[READ]);
+		while (wait(NULL) > 0)
+			;
 	}
 	return (pid);
 }
