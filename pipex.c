@@ -25,6 +25,8 @@ int	main(int argc, char **argv, char **envp)
 	}
 	create_first_child(&pipex, argv[2], envp);
 	create_last_child(&pipex, argv[argc - 2], envp);
+	while (wait(NULL) > 0)
+		;
 	if (WIFEXITED(pipex.status))
 		return (WEXITSTATUS(pipex.status));
 	return (0);

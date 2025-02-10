@@ -19,8 +19,8 @@ char	*get_cmd_path(char *cmd, char *envp[])
 	int		i;
 
 	i = 0;
-	if (!access(cmd, X_OK))
-		return (ft_strdup(cmd));
+	if (cmd && !access(cmd, X_OK))
+		return (cmd);
 	while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
 		i++;
 	if (!envp[i])
@@ -33,9 +33,9 @@ char	*get_cmd_path(char *cmd, char *envp[])
 	}
 	i = 0;
 	cmd_path = ft_strjoin(path[i], cmd);
-	while (path[i] && access(cmd_path, X_OK))
+	while (path[i] && cmd_path && access(cmd_path, X_OK))
 		cmd_path = ((free(cmd_path)), ft_strjoin(path[i++], cmd));
-	if (!access(cmd_path, X_OK))
+	if (cmd_path && !access(cmd_path, X_OK))
 		return (cmd_path);
 	return (free(cmd_path), (ft_free_split(path)), NULL);
 }
@@ -46,15 +46,19 @@ void	execute_cmd(char **args, char *envp[])
 
 	cmd_path = get_cmd_path(args[0], envp);
 	if (!cmd_path)
-		handle_exec_error(args[0], "command not found", 127);
+	{
+		cmd_path = ft_strdup(args[0]);
+		ft_free_split(args);
+		handle_exec_error(&cmd_path, "command not found", 127);
+	}
 	if (execve(cmd_path, args, envp) == -1)
 	{
 		free(cmd_path);
 		if (errno == EACCES)
-			handle_exec_error(args[0], "permission denied", 126);
+			handle_exec_error(&args[0], "permission denied", 126);
 		else
-			handle_exec_error(args[0], strerror(errno), 1);
+			handle_exec_error(&args[0], strerror(errno), 1);
 		free(args);
 	}
-	handle_exec_error(args[0], strerror(errno), 127);
+	handle_exec_error(&args[0], strerror(errno), 127);
 }

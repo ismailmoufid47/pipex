@@ -29,7 +29,7 @@ pid_t	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
 	if (ft_strcmp(pipex->argv[1], "here_doc") == 0)
 		handle_heredoc(pipex);
 	if (pipe(pipex->pipefd) == -1)
-		handle_exec_error(cmd, strerror(errno), 1);
+		handle_exec_error(&cmd, strerror(errno), 1);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -41,7 +41,7 @@ pid_t	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
 		execute_cmd(ft_split_cmd(cmd, ' '), envp);
 	}
 	else if (pid == -1)
-		handle_exec_error(cmd, strerror(errno), 1);
+		handle_exec_error(&cmd, strerror(errno), 1);
 	else
 		close(pipex->pipefd[WRITE]);
 	return (pid);
@@ -66,7 +66,7 @@ pid_t	create_middle_child(t_pipex *pipex, char *cmd, char *envp[])
 	pipex->prev_pipefd[READ] = pipex->pipefd[READ];
 	pipex->prev_pipefd[WRITE] = pipex->pipefd[WRITE];
 	if (pipe(pipex->pipefd) == -1)
-		handle_exec_error(cmd, strerror(errno), 1);
+		handle_exec_error(&cmd, strerror(errno), 1);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -76,7 +76,7 @@ pid_t	create_middle_child(t_pipex *pipex, char *cmd, char *envp[])
 		execute_cmd(ft_split_cmd(cmd, ' '), envp);
 	}
 	else if (pid == -1)
-		handle_exec_error(cmd, strerror(errno), 1);
+		handle_exec_error(&cmd, strerror(errno), 1);
 	else
 		close(pipex->pipefd[WRITE]);
 	return (pid);
@@ -106,7 +106,7 @@ pid_t	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
 		execute_cmd(ft_split_cmd(cmd, ' '), envp);
 	}
 	else if (pid == -1)
-		handle_exec_error(cmd, strerror(errno), 1);
+		handle_exec_error(&cmd, strerror(errno), 1);
 	else
 	{
 		close(pipex->pipefd[READ]);

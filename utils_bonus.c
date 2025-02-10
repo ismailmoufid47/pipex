@@ -56,11 +56,12 @@ void	handle_file_error(char *file)
 	exit(1);
 }
 
-void	handle_exec_error(char *cmd, char *error_msg, int status)
+void	handle_exec_error(char **cmd, char *error_msg, int status)
 {
 	ft_putstr_fd("pipex: ", 2);
-	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(*cmd, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(error_msg, 2);
+	free(*cmd);
 	exit(status);
 }

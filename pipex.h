@@ -47,6 +47,6 @@ void	execute_cmd(char **args, char *envp[]);
 
 void	dup_and_close(int fd1, int fd2, int fd3, int fd4);
 void	handle_file_error(char *file);
-void	handle_exec_error(char *cmd, char *error_msg, int status);
+void	handle_exec_error(char **cmd, char *error_msg, int status);
 
 #endif
