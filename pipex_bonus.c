@@ -6,7 +6,7 @@
 /*   By: isel-mou <isel-mou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:38:20 by isel-mou          #+#    #+#             */
-/*   Updated: 2025/02/10 19:46:15 by isel-mou         ###   ########.fr       */
+/*   Updated: 2025/02/10 21:10:37 by isel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ int	main(int argc, char **argv, char **envp)
 	while (++i < argc - 2)
 		create_middle_child(&pipex, argv[i], envp);
 	create_last_child(&pipex, argv[argc - 2], envp);
-	while (wait(NULL) > 0)
-		;
 	if (WIFEXITED(pipex.status))
 		return (WEXITSTATUS(pipex.status));
 	return (0);
