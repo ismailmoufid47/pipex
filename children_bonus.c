@@ -6,7 +6,7 @@
 /*   By: isel-mou <isel-mou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 19:34:29 by isel-mou          #+#    #+#             */
-/*   Updated: 2025/02/10 20:57:58 by isel-mou         ###   ########.fr       */
+/*   Updated: 2025/02/10 21:06:28 by isel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ In the first child process:
 - We open the WRITE end of the pipe as standard output.  
 - Finally, we execute the command.  
 */
-pid_t	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
+void	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
 {
 	pid_t	pid;
 	int		in_fd;
@@ -42,7 +42,6 @@ pid_t	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
 		handle_exec_error(&cmd, strerror(errno), 1);
 	else
 		close(pipex->pipefd[WRITE]);
-	return (pid);
 }
 
 /*  
@@ -57,7 +56,7 @@ In a middle child process:
 - We open the new pipe's WRITE end as standard output.
 - Finally, we execute the command.
 */
-pid_t	create_middle_child(t_pipex *pipex, char *cmd, char *envp[])
+void	create_middle_child(t_pipex *pipex, char *cmd, char *envp[])
 {
 	pid_t	pid;
 
@@ -77,7 +76,6 @@ pid_t	create_middle_child(t_pipex *pipex, char *cmd, char *envp[])
 		handle_exec_error(&cmd, strerror(errno), 1);
 	else
 		close(pipex->pipefd[WRITE]);
-	return (pid);
 }
 
 /*
@@ -94,7 +92,7 @@ void	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
 	pid = fork();
 	if (pid == 0)
 	{
-		out_fd = openfile(pipex, HERE_DOC);
+		out_fd = open_file(pipex, HERE_DOC);
 		if (out_fd == -1)
 			handle_file_error(pipex->argv[pipex->argc - 1]);
 		dup_and_close(pipex->pipefd[READ], STDIN_FILENO, out_fd, STDOUT_FILENO);

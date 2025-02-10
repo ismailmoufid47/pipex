@@ -6,7 +6,7 @@
 /*   By: isel-mou <isel-mou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 19:34:29 by isel-mou          #+#    #+#             */
-/*   Updated: 2025/02/10 20:58:22 by isel-mou         ###   ########.fr       */
+/*   Updated: 2025/02/10 21:06:14 by isel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ In the first child process:
 - We open the WRITE end of the pipe as standard output.
 - Finally, we execute the command.
 */
-pid_t	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
+void	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
 {
 	pid_t	pid;
 	int		in_fd;
@@ -42,7 +42,6 @@ pid_t	create_first_child(t_pipex *pipex, char *cmd, char *envp[])
 		handle_exec_error(&cmd, strerror(errno), 1);
 	else
 		close(pipex->pipefd[WRITE]);
-	return (pid);
 }
 
 /*
@@ -51,7 +50,7 @@ In the last child process:
 - We open the READ end of the pipe as standard input.
 - Finally, we execute the command.
 */
-pid_t	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
+void	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
 {
 	pid_t	pid;
 	int		out_fd;
@@ -73,5 +72,4 @@ pid_t	create_last_child(t_pipex *pipex, char *cmd, char *envp[])
 		while (wait(NULL) > 0)
 			;
 	}
-	return (pid);
 }

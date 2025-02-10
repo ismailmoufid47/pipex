@@ -6,7 +6,7 @@
 /*   By: isel-mou <isel-mou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 17:20:56 by isel-mou          #+#    #+#             */
-/*   Updated: 2025/02/10 20:59:25 by isel-mou         ###   ########.fr       */
+/*   Updated: 2025/02/10 21:05:26 by isel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,14 @@ typedef struct s_pipex
 	int		status;
 }	t_pipex;
 
-pid_t	create_first_child(t_pipex *pipex, char *cmd, char *envp[]);
-pid_t	create_middle_child(t_pipex *pipex, char *cmd, char *envp[]);
-pid_t	create_last_child(t_pipex *pipex, char *cmd, char *envp[]);
+void	create_first_child(t_pipex *pipex, char *cmd, char *envp[]);
+void	create_middle_child(t_pipex *pipex, char *cmd, char *envp[]);
+void	create_last_child(t_pipex *pipex, char *cmd, char *envp[]);
 
 char	**ft_split_cmd(char *str, char c);
 void	execute_cmd(char **args, char *envp[]);
 
+int		open_file(t_pipex *pipex, int file);
 void	dup_and_close(int fd1, int fd2, int fd3, int fd4);
 void	handle_heredoc(t_pipex *pipex);
 void	handle_file_error(char *file);

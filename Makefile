@@ -1,8 +1,8 @@
 NAME = 		pipex
 
-SRC = 				pipex.c children.c utils.c split_command.c commands.c
+SRC = 				pipex.c children.c split_command.c commands.c utils.c
 
-SRC_BONUS = 		pipex_bonus.c children_bonus.c utils_bonus.c split_command.c commands.c
+SRC_BONUS = 		pipex_bonus.c children_bonus.c utils_bonus.c split_command.c commands.c utils.c
 
 LIBFT =				libft/libft.a
 
